@@ -36,4 +36,28 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    // METODOS SOBREESCRITOS
+    public function redirectPath(){
+        if(auth()->user()->role_id == 1){
+            return '/administrator/inicio';
+        }
+        if(auth()->user()->role_id == 2){
+            return '/teacher/inicio';
+        }
+        if(auth()->user()->role_id == 3){
+            return '/student/inicio';
+        }
+    } 
+
+    public function username(){
+        return 'username';
+    }
+
+    // Metodo logout para cerrar sesion, y nos ubique en la vista login
+    public function logout(){
+        auth()->logout(); //Para poder cerrar sesión de la aplicación
+        session()->flush(); //Limpiar todas las sesiones
+        return redirect('/login');
+    }
 }
